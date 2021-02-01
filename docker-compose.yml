@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+  db:
+    image: mysql:8.0
+    env_file:
+      - ./environments/db.env
+    restart: always
+    ports:
+      - '3306:3306'
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  app:
+    build: 
+      context: .
+    # rm -f tmp/pids/server.pidしとくとrailsのサーバ消し損ねたときに便利
+    command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec puma -C config/puma.rb" 
+    env_file:
+      - ./environments/db.env
+    volumes:
+      - .:/app:cached
+      - bundle:/usr/local/bundle
+      - public-data:/app/public
+      - tmp-data:/app/tmp
+      - log-data:/app/log
+    depends_on:
+      - db
+
+  nginx:
+    build:
+      context: ./containers/nginx
+    volumes:
+      - public-data:/app/public
+      - tmp-data:/app/tmp
+    ports:
+      - 80:80
+    depends_on:
+      - app
+
+
+volumes:
+  public-data:
+  tmp-data:
+  log-data:
+  mysql-data:
+  bundle:
