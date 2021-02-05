@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   namespace :api, format: 'json' do
     namespace :v1 do
       resources :users
+      post   '/auth',   to: 'auth#create'
+      delete '/auth',  to: 'auth#destroy'
     end
   end
 end
