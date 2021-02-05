@@ -30,18 +30,6 @@ services:
     ports:
       - 3000:3000
 
-  nginx:
-    build:
-      context: ./containers/nginx
-    volumes:
-      - public-data:/app/public
-      - tmp-data:/app/tmp
-    ports:
-      - 80:80
-    depends_on:
-      - app
-
-
 volumes:
   public-data:
   tmp-data:
