@@ -35,6 +35,7 @@ module App
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
     config.middleware.use ActionDispatch::ContentSecurityPolicy::Middleware
+    config.action_dispatch.cookies_same_site_protection = :none
     config.api_only = true
   end
 end
