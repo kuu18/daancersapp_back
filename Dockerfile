@@ -29,6 +29,4 @@ RUN apk update && \
 # ホスト（自分のパソコンにあるファイル）から必要ファイルをDocker上にコピー
 ADD . ${HOME}
 
-EXPOSE 3000
-
-CMD ["bundle", "exec", "rails", "s", "puma", "-b", "0.0.0.0", "-p", "3000", "-e", "development"]
+CMD ["rails", "server", "-b", "0.0.0.0"]
